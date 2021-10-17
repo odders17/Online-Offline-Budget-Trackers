@@ -18,3 +18,10 @@ request.onupgradeneeded = function (e) {
         db.createObjectStore('transactions', {autoIncrement: true});
     }
 };
+
+request.onerror = function (e) {
+    console.log(`Woops! ${e.target.errorCode}`);
+};
+
+function checkDatabase() {
+    console.log('check db invoked');
