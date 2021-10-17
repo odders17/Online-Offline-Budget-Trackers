@@ -75,3 +75,15 @@ request.onsuccess = function (e) {
         checkDatabase();
     }
 };
+
+const saveRecord = (record) => {
+    console.log('Save record invoked');
+    //On db with read write access create transaction
+    const transaction = db.transaction(['transaction'], 'readwrite');
+
+    //Access transaction object store
+    const store = transaction.objectStore('transaction');
+
+    //Add record to store 
+    store.add(record);
+};
