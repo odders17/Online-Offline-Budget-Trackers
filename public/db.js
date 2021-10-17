@@ -34,3 +34,16 @@ const store = transaction.objectStore('transactions');
 
 //Set to variable and get all records from store
 const getAll = store.getAll();
+
+//If request successful
+getAll.onsuccess = function () {
+    //When back online bulk adds items in store
+    if (getAll.result.length > 0) {
+        fetch('/api/transaction/bulk', {
+            method: 'POST',
+            body: JSON.stringify(getAll.result),
+            headers: {
+                Accept: 'application/json, text/plain, */*',
+                'Content-Type': 'application/json',
+            },
+        })
