@@ -64,3 +64,14 @@ getAll.onsuccess = function () {
         };
     };
 };
+
+request.onsuccess = function (e) {
+    console.log('success');
+    db = e.target.result;
+
+    //Before readind db checks if app is online
+    if (navigator.onLine) {
+        console.log('Backend online!');
+        checkDatabase();
+    }
+};
