@@ -87,3 +87,6 @@ const saveRecord = (record) => {
     //Add record to store 
     store.add(record);
 };
+
+//Add EventListener for when app comes back online
+window.addEventListener('online', checkDatabase);
