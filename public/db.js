@@ -25,3 +25,9 @@ request.onerror = function (e) {
 
 function checkDatabase() {
     console.log('check db invoked');
+
+//Transaction opened
+let transaction = db.transaction(['transactions'], 'readwrite');
+
+//Transactions object access
+const store = transaction.objectStore('transactions');
