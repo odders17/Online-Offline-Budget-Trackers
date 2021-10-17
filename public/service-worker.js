@@ -41,3 +41,28 @@ self.addEventListener("install", function(evt) {
   
     self.clients.claim();
   });
+
+  //Added fetch event listener
+  self.addEventListener("fetch", function(evt) {
+    // cache successful requests to the API
+    if (evt.request.url.includes("/api/")) {
+      evt.respondWith(
+        caches.open(DATA_CACHE_NAME).then(cache => {
+          return fetch(evt.request)
+            .then(response => {
+              // Clone it and store it in the cache if the response was good.
+              if (response.status === 200) {
+                cache.put(evt.request.url, response.clone());
+              }
+  
+              return response;
+            })
+            .catch(err => {
+              //Try to get it from the cache as network request failed.
+              return cache.match(evt.request);
+            });
+        }).catch(err => console.log(err))
+      );
+  
+      return;
+    }
