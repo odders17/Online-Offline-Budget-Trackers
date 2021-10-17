@@ -52,3 +52,15 @@ getAll.onsuccess = function () {
                 if(res.length !== 0) {
                     //With read write access open another transaction
                     transaction = db.transaction(['transactions'], 'readwrite');
+
+                    //Current store assigned to variable
+                    const currentStore = transaction.objectStore('transactions');
+
+                    //When bulk add successful clear existing entries
+                    currentStore.clear();
+                    console.log('Clearing store');
+                }
+            });
+        };
+    };
+};
