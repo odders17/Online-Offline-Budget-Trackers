@@ -31,3 +31,6 @@ let transaction = db.transaction(['transactions'], 'readwrite');
 
 //Transactions object access
 const store = transaction.objectStore('transactions');
+
+//Set to variable and get all records from store
+const getAll = store.getAll();
