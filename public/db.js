@@ -47,3 +47,8 @@ getAll.onsuccess = function () {
                 'Content-Type': 'application/json',
             },
         })
+        .then((response) => response.json())
+            .then((res) => {
+                if(res.length !== 0) {
+                    //With read write access open another transaction
+                    transaction = db.transaction(['transactions'], 'readwrite');
