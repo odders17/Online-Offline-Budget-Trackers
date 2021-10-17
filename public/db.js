@@ -36,18 +36,18 @@ const store = transaction.objectStore('transactions');
 const getAll = store.getAll();
 
 //If request successful
-getAll.onsuccess = function () {
-    //When back online bulk adds items in store
-    if (getAll.result.length > 0) {
-        fetch('/api/transaction/bulk', {
-            method: 'POST',
-            body: JSON.stringify(getAll.result),
-            headers: {
-                Accept: 'application/json, text/plain, */*',
+    getAll.onsuccess = function () {
+        //When back online bulk adds items in store
+        if (getAll.result.length > 0) {
+            fetch('/api/transaction/bulk', {
+                method: 'POST',
+                body: JSON.stringify(getAll.result),
+                headers: {
+                    Accept: 'application/json, text/plain, */*',
                 'Content-Type': 'application/json',
-            },
-        })
-        .then((response) => response.json())
+                },
+            })
+            .then((response) => response.json())
             .then((res) => {
                 if(res.length !== 0) {
                     //With read write access open another transaction
