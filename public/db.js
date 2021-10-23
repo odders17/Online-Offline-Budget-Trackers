@@ -2,27 +2,37 @@ let db;
 let budgetVersion;
 
 //For budget database create new db request
-const request = indexedDB.open('budget', budgetVersion || 1);
+const request = indexedDB.open('budget', 1);
 
 request.onupgradeneeded = function (e) {
     console.log('Upgrade needed in IndexDB');
 
-    const { oldVersion } = e;
-    const newVersion = e.newVersion || db.version;
+    // const { oldVersion } = e;
+    // const newVersion = e.newVersion || db.version;
 
-    console.log(`DB Updated from version ${oldVersion} to ${newVersion}`);
+    // console.log(`DB Updated from version ${oldVersion} to ${newVersion}`);
 
     db = e.target.result;
-
-    if (db.objectStoreNames.length === 0) {
-        db.createObjectStore('transactions', {autoIncrement: true});
-    }
+    db.createObjectStore('transactions', {autoIncrement: true})
+    //  (db.objectStoreNames.length === 0) {
+    //     ;
+    // }
 };
 
 request.onerror = function (e) {
     console.log(`Woops! ${e.target.errorCode}`);
 };
+function saveRecord (record) {
+    console.log('Save record invoked');
+    //On db with read write access create transaction
+    const transaction = db.transaction(['transaction'], 'readwrite');
 
+    //Access transaction object store
+    const store = transaction.objectStore('transaction');
+
+    //Add record to store 
+    store.add(record);
+};
 function checkDatabase() {
     console.log('check db invoked');
 
@@ -51,7 +61,7 @@ const getAll = store.getAll();
             .then((res) => {
                 if(res.length !== 0) {
                     //With read write access open another transaction
-                    transaction = db.transaction(['transactions'], 'readwrite');
+                    const transaction = db.transaction(['transactions'], 'readwrite');
 
                     //Current store assigned to variable
                     const currentStore = transaction.objectStore('transactions');
@@ -74,18 +84,6 @@ request.onsuccess = function (e) {
         console.log('Backend online!');
         checkDatabase();
     }
-};
-
-const saveRecord = (record) => {
-    console.log('Save record invoked');
-    //On db with read write access create transaction
-    const transaction = db.transaction(['transaction'], 'readwrite');
-
-    //Access transaction object store
-    const store = transaction.objectStore('transaction');
-
-    //Add record to store 
-    store.add(record);
 };
 
 //Add EventListener for when app comes back online
