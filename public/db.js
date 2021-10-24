@@ -13,7 +13,7 @@ request.onupgradeneeded = function (e) {
     // console.log(`DB Updated from version ${oldVersion} to ${newVersion}`);
 
     db = e.target.result;
-    db.createObjectStore('budget', {autoIncrement: true})
+    db.createObjectStore('pending', {autoIncrement: true})
     //  (db.objectStoreNames.length === 0) {
     //     ;
     // }
@@ -25,10 +25,10 @@ request.onerror = function (e) {
 function saveRecord (record) {
     console.log('Save record invoked');
     //On db with read write access create transaction
-    const transaction = db.transaction(['budget'], 'readwrite');
+    const transaction = db.transaction(['pending'], 'readwrite');
 
     //Access transaction object store
-    const store = transaction.objectStore('budget');
+    const store = transaction.objectStore('pending');
 
     //Add record to store 
     store.add(record);
@@ -37,10 +37,10 @@ function checkDatabase() {
     console.log('check db invoked');
 
 //Transaction opened
-let transaction = db.transaction(['budget'], 'readwrite');
+let transaction = db.transaction(['pending'], 'readwrite');
 
 //Transactions object access
-const store = transaction.objectStore('budget');
+const store = transaction.objectStore('pending');
 
 //Set to variable and get all records from store
 const getAll = store.getAll();
@@ -61,10 +61,10 @@ const getAll = store.getAll();
             .then((res) => {
                 if(res.length !== 0) {
                     //With read write access open another transaction
-                    const transaction = db.transaction(['budget'], 'readwrite');
+                    const transaction = db.transaction(['pending'], 'readwrite');
 
                     //Current store assigned to variable
-                    const currentStore = transaction.objectStore('budget');
+                    const currentStore = transaction.objectStore('pending');
 
                     //When bulk add successful clear existing entries
                     currentStore.clear();
